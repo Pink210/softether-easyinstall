@@ -34,7 +34,7 @@ sleep 2
 
 
 # Install install net-tools
-printf "${RED}install net-tools${NC}"
+printf "%sinstall net-tools%s" "$RED" "$NC"
 PKG_OK=$(command -v net-tools)
 echo  "Checking for net-tools: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
@@ -44,7 +44,7 @@ fi
 sleep 2
 
 # Install install ncat
-printf "${RED}install ncat${NC}"
+printf "%sinstall ncat%s" "$RED" "$NC"
 PKG_OK=$(command -v ncat)
 echo  "Checking for ncat: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
@@ -54,7 +54,7 @@ fi
 sleep 2
 
 # Install install certbot
-printf "${RED}install certbot${NC}"
+printf "%sinstall certbot%s" "$RED" "$NC"
 PKG_OK=$(command -v certbot)
 echo  "Checking for certbot: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
@@ -67,7 +67,7 @@ sleep 2
 sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev || exit
 sleep 2
 # Download SoftEther | Version 4.41 | Build 9787
-printf "Downloading release: ${RED}4.41 RTM${NC} | Build ${RED}9787${NC}"
+printf "%sDownloading release: 4.41 RTM | Build 9787%s" "$RED" "$NC"
 wget https://www.softether-download.com/files/softether/v4.41-9787-rtm-2023.03.14-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz || exit
 sleep 2
 tar xvf softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz -C -|| exit
@@ -86,7 +86,7 @@ sudo /opt/softether/vpnserver start || exit
 sleep 5
 sudo /opt/softether/vpnserver stop || exit
 sleep 5
-printf "${RED}Create the service file${NC}"
+printf "%sCreate the service file%s" "$RED" "$NC"
 # Create the service file with the desired content
 sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << 'EOF'
 [Unit]
@@ -104,25 +104,25 @@ WantedBy=multi-user.target
 EOF
 
 # Reload the systemd daemon to recognize the new service
-printf "${RED}daemon to recognize the new service${NC}"
+printf "%sdaemon to recognize the new service%s" "$RED" "$NC"
 sudo systemctl daemon-reload || exit
 sleep 2
 # Enable the service to start on boot
-printf "${RED}Enable the service to start on boot${NC}"
+printf "%sEnable the service to start on boot%s" "$RED" "$NC"
 sudo systemctl enable softether-vpnserver.service || exit
 sleep 3
 # Start the service
-printf "${RED}Start the service${NC}"
+printf "%sStart the service%s" "$RED" "$NC"
 sudo systemctl start softether-vpnserver.service || exit
 sleep 5
 # enable IPv4 forwadring 
-printf "${RED}enable IPv4 forwadring${NC}" 
+printf "%senable IPv4 forwadring%s" "$RED" "$NC"
 echo 1 > /proc/sys/net/ipv4/ip_forward || exit
 sleep 2
 cat /proc/sys/net/ipv4/ip_forward || exit
 #Openig port
 
-printf "${RED}Openig port${NC}"
+printf "%sOpenig port%s" "$RED" "$NC"
 sudo ufw allow 22
 sudo ufw allow 53
 sudo ufw allow 2280
