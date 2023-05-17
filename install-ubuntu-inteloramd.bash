@@ -57,6 +57,32 @@ sudo /opt/softether/vpnserver start
 sleep 5
 sudo /opt/softether/vpnserver stop
 sleep 5
+printf "\n${RED}Create the service file${NC}\n\n"
+# Create the service file with the desired content
+sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << EOF
+[Unit]
+Description=SoftEther VPN server
+After=network-online.target
+After=dbus.service
+
+[Service]
+Type=forking
+ExecStart=/opt/softether/vpnserver start
+ExecReload=/bin/kill -HUP \$MAINPID
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload the systemd daemon to recognize the new service
+sudo systemctl daemon-reload
+sleep 2
+# Enable the service to start on boot
+sudo systemctl enable softether-vpnserver.service
+sleep 2
+# Start the service
+sudo systemctl start softether-vpnserver.service
+sleep 3
 #Openig port
 printf "\n${RED}Openig port${NC}\n\n"
 sudo ufw allow 22
