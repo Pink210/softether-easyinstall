@@ -2,7 +2,7 @@
 (( EUID != 0 )) && exec sudo -- "$0" "$@"
 clear
 # User confirmation
-read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script will remove it. If you are updating, please backup your config file first. SoftEther VPN will be downloaded and compiled on your server. Are you sure you want to move forward? [[y/N]] ' response
+read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script will remove it. If you are updating, please backup your config file first. SoftEther VPN(v4.41-9787-rtm-2023.03.14) will be downloaded and compiled on your server. Are you sure you want to move forward? [[y/N]] ' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
