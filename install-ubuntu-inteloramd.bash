@@ -99,7 +99,8 @@ sudo ufw allow 1701
 sudo ufw allow 500
 sudo ufw allow 8280
 sudo ufw allow 500,4500,8280,53/udp
-sleep 5
+sleep 15
+#12 enable IPv4 forwadring 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sleep 3
 cat /proc/sys/net/ipv4/ip_forward
