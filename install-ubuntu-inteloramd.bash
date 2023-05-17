@@ -92,5 +92,4 @@ sudo ufw allow 500,4500,8280,53/udp
 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 cat /proc/sys/net/ipv4/ip_forward
-done
 esac
