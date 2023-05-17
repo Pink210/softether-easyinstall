@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 # Define console colors
 RED='\033[0;31m'
@@ -9,7 +8,7 @@ clear
 # User confirmation
 read -rep $'!!! IMPORTANT !!!\n\nThis script will remove SoftEther if it has been previously installed. Please backup your config file via the GUI manager or copy it from /opt/vpnserver/ if you are upgrading.\n\nThis will download and compile SoftEther VPN on your server. Are you sure you want to continue? [[y/N]] ' response
 case "$response" in
-[yY][eE][sS]|;;[yY];;)
+[yY][eE][sS]|[yY])
 
 # REMOVE PREVIOUS INSTALL
 # Check for SE install folder
