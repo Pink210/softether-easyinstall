@@ -31,7 +31,7 @@ fi
 update-rc.d vpnserver remove > /dev/null 2>&1
 
 # Perform apt update & install necessary software
-sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt install net-tools && sudo apt install ncat
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt install net-tools && sudo apt install ncat && sudo apt install certbot
 sleep 5
 
 #install dependency
