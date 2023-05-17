@@ -31,30 +31,58 @@ fi
 update-rc.d vpnserver remove > /dev/null 2>&1
 
 # Perform apt update & install necessary software
-sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt install net-tools && sudo apt install ncat && sudo apt install certbot
+sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get autoremove -y
 sleep 5
 
+
+# Install install net-tools
+printf "\n${RED}install net-tools${NC}\n\n"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' net-tools|grep "install ok installed")
+echo  "Checking for net-tools: $PKG_OK"
+if [ "" == "$PKG_OK" ]; then
+  echo "net-tools not installed. Installing now."
+  sudo apt install -y net-tools
+fi
+sleep 5
+# Install install ncat
+printf "\n${RED}install ncat${NC}\n\n"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ncat|grep "install ok installed")
+echo  "Checking for ncat: $PKG_OK"
+if [ "" == "$PKG_OK" ]; then
+  echo "ncat not installed. Installing now."
+  sudo apt install -y ncat
+fi
+sleep 5
+# Install install certbot
+printf "\n${RED}install certbot${NC}\n\n"
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' certbot|grep "install ok installed")
+echo  "Checking for certbot: $PKG_OK"
+if [ "" == "$PKG_OK" ]; then
+  echo "certbot not installed. Installing now."
+  sudo apt install -y certbot
+fi
+sleep 5
 #install dependency
-sudo apt install gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev
+sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev
 sleep 5
 # Download SoftEther | Version 4.41 | Build 9787
 printf "\nDownloading release: ${RED}4.41 RTM${NC} | Build ${RED}9787${NC}\n\n"
 wget https://www.softether-download.com/files/softether/v4.41-9787-rtm-2023.03.14-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz
-sleep 2
+sleep 5
 tar xvf softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz
-sleep 3
+sleep 5
 cd vpnserver
-sleep 2
+sleep 5
 apt install make -y
-sleep 2
+sleep 10
 make
-sleep 2
+sleep 5
 cd ..
 sleep 2
 sudo mv vpnserver /opt/softether
 sleep 2
 sudo /opt/softether/vpnserver start
-sleep 5
+sleep 10
 sudo /opt/softether/vpnserver stop
 sleep 5
 printf "\n${RED}Create the service file${NC}\n\n"
@@ -75,33 +103,54 @@ WantedBy=multi-user.target
 EOF
 
 # Reload the systemd daemon to recognize the new service
+printf "\n${RED}daemon to recognize the new service${NC}\n\n"
 sudo systemctl daemon-reload
 sleep 2
 # Enable the service to start on boot
+printf "\n${RED}Enable the service to start on boot${NC}\n\n"
 sudo systemctl enable softether-vpnserver.service
 sleep 2
 # Start the service
+printf "\n${RED}Start the service${NC}\n\n"
 sudo systemctl start softether-vpnserver.service
-sleep 3
+sleep 5
+#12 enable IPv4 forwadring 
+printf "\n${RED}enable IPv4 forwadring${NC}\n\n"
+echo 1 > /proc/sys/net/ipv4/ip_forward
+sleep 5
+cat /proc/sys/net/ipv4/ip_forward
 #Openig port
+
 printf "\n${RED}Openig port${NC}\n\n"
 sudo ufw allow 22
+sleep 2
 sudo ufw allow 53
+sleep 2
 sudo ufw allow 2280
+sleep 2
+sudo ufw allow 2380
+sleep 2
 sudo ufw allow 443
+sleep 2
 sudo ufw allow 80
+sleep 2
 sudo ufw allow 992
+sleep 2
 sudo ufw allow 1194
+sleep 2
 sudo ufw allow 2080
+sleep 2
 sudo ufw allow 5555
+sleep 2
 sudo ufw allow 4500
+sleep 2
 sudo ufw allow 1701
+sleep 2
 sudo ufw allow 500
+sleep 2
 sudo ufw allow 8280
+sleep 2
 sudo ufw allow 500,4500,8280,53/udp
 sleep 15
-#12 enable IPv4 forwadring 
-echo 1 > /proc/sys/net/ipv4/ip_forward
-sleep 3
-cat /proc/sys/net/ipv4/ip_forward
+reboot
 esac
