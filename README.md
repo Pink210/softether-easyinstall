@@ -8,5 +8,5 @@ wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinsta
 ```
 #### ARMS
 ```bash
-soon
+wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/install-ubuntu-arms.bash  && chmod +x se-install && ./se-install
 ```
