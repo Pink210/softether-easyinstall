@@ -6,6 +6,8 @@ read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script
 case "$response" in
 [yY][eE][sS]|[yY])
 
+sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
+
 # REMOVE PREVIOUS INSTALL
 # Check for SE install folder
 if [ -d "/opt/vpnserver" ]; then
@@ -101,6 +103,73 @@ sudo ufw allow 1701
 sudo ufw allow 500
 sudo ufw allow 8280
 sudo ufw allow 500,4500,8280,53/udp
+sleep 3
+
+#SET certificate
+read -rp "Do you want to set certificate on your server? " -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  printf 'enter your domain name?\n'
+  read -r ser # This reads input from the user and stores it in the variable name
+  printf 'enter your email address?\n'
+  read -r email # This reads input from the user and stores it in the variable name
+  if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
+  then
+    sleep 3
+    sudo /opt/softether/vpncmd 127.0.0.1:5555
+    sleep 3
+    ServerCertSet
+    sleep 3
+    /etc/letsencrypt/live/"$ser"/fullchain.pem
+    sleep 3
+    /etc/letsencrypt/live/"$ser"/privkey.pemexit
+    sleep 3
+    exit
+    sleep 3
+    sudo systemctl restart softether-vpnserver
+    sleep 3
+    printf 'Certificate successfully installed and VPN server restarted.\n'
+  else
+    printf 'Certificate installation failed.\n'
+  fi  
+else
+  printf 'Certificate installation skipped.\n'
+fi
+
+#installin BBR
+read -rp "Do you want to install BBR y/N " -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  if wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+  then
+    printf 'BBR successfully installed.\n'
+  else
+    printf 'BBR installation failed.\n'
+  fi
+else
+  printf 'BBR installation skipped.\n'
+fi
+
+#namizun
+read -rp "Do you want to install BBR y/N " -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  if sudo curl https://raw.githubusercontent.com/malkemit/namizun/master/else/setup.sh | sudo bash
+  then
+    printf 'Namizun successfully installed.\n'
+  else
+    printf 'Namizun installation failed.\n'
+  fi
+else
+  printf 'Namizun installation skipped.\n'
+fi
+
+
+sleep 3
+sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 sleep 5
 # Ask the user for confirmation before rebooting
 read -p "This script will reboot your system. Are you sure? [y/N] " -n 1 -r
