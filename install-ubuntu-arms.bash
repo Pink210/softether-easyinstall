@@ -6,6 +6,7 @@ read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script
 case "$response" in
 [yY][eE][sS]|[yY])
 
+#remove needrestart for less interruption 
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
 # REMOVE PREVIOUS INSTALL
@@ -167,10 +168,11 @@ else
   printf 'Namizun installation skipped.\n'
 fi
 
-
+#add needrestart back again
 sleep 3
 sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 sleep 5
+
 # Ask the user for confirmation before rebooting
 read -p "This script will reboot your system. Are you sure? [y/N] " -n 1 -r
 echo # (optional) move to a new line
