@@ -6,7 +6,7 @@ read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script
 case "$response" in
 [yY][eE][sS]|[yY])
 
-sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
+sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
 # REMOVE PREVIOUS INSTALL
 # Check for SE install folder
