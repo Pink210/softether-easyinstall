@@ -2,7 +2,7 @@
 (( EUID != 0 )) && exec sudo -- "$0" "$@"
 clear
 # User confirmation
-read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script will remove it. If you are updating, please backup your config file first. SoftEther VPN(v4.41-9787-rtm-2023.03.14) will be downloaded and compiled on your server. Are you sure you want to move forward? [[y/N]] ' response
+read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.41-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want continue ? [[y/N]] ' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
@@ -12,11 +12,10 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 # REMOVE PREVIOUS INSTALL
 # Check for SE install folder
 if [ -d "/opt/vpnserver" ]; then
+  read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script will remove it. If you are updating, please backup your config file first. . Are you sure you want to move forward? [[y/N]] ' response
+  case "$response" in
+  [yY][eE][sS]|[yY])
   rm -rf /opt/vpnserver > /dev/null 2>&1
-fi
-
-if [ -d "/tmp/softether-autoinstall" ]; then
-  rm -rf /tmp/softether-autoinstall > /dev/null 2>&1
 fi
 
 # Check for init script
@@ -29,7 +28,7 @@ systemctl disable vpnserver > /dev/null 2>&1
 
 # Start from here
 # Perform apt update & install necessary software
-sudo apt-get update -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y 
+sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y upgrade -y && sudo apt-get autoremove -y 
 sleep 2
 
 # Install some usfull tools
@@ -40,9 +39,9 @@ sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev
 sleep 2
 
 # Download SoftEther | Version 4.41 | Build 9787
-wget https://www.softether-download.com/files/softether/v4.41-9787-rtm-2023.03.14-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz || exit
+wget https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-x64-64bit.tar.gz || exit
 sleep 2
-tar xvf softether-vpnserver-v4.41-9787-rtm-2023.03.14-linux-x64-64bit.tar.gz || exit
+tar xvf softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-x64-64bit.tar.gz || exit
 sleep 2
 cd vpnserver || exit
 sleep 2
@@ -121,6 +120,8 @@ then
     sleep 3
     sudo /opt/softether/vpncmd 127.0.0.1:5555
     sleep 3
+    1
+    sleep 3
     ServerCertSet
     sleep 3
     /etc/letsencrypt/live/"$ser"/fullchain.pem
@@ -137,36 +138,6 @@ then
   fi  
 else
   printf 'Certificate installation skipped.\n'
-fi
-
-#installin BBR
-read -rp "Do you want to install BBR y/N " -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  if wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
-  then
-    printf 'BBR successfully installed.\n'
-  else
-    printf 'BBR installation failed.\n'
-  fi
-else
-  printf 'BBR installation skipped.\n'
-fi
-
-#namizun
-read -rp "Do you want to install BBR y/N " -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  if sudo curl https://raw.githubusercontent.com/malkemit/namizun/master/else/setup.sh | sudo bash
-  then
-    printf 'Namizun successfully installed.\n'
-  else
-    printf 'Namizun installation failed.\n'
-  fi
-else
-  printf 'Namizun installation skipped.\n'
 fi
 
 
