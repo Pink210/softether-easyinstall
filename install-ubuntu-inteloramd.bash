@@ -12,9 +12,6 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 # REMOVE PREVIOUS INSTALL
 # Check for SE install folder
 if [ -d "/opt/vpnserver" ]; then
-  read -rep $'!!! IMPORTANT !!!\n\nIf SoftEther was already installed, this script will remove it. If you are updating, please backup your config file first. . Are you sure you want to move forward? [[y/N]] ' response
-  case "$response" in
-  [yY][eE][sS]|[yY])
   rm -rf /opt/vpnserver > /dev/null 2>&1
 fi
 
