@@ -114,21 +114,6 @@ then
   read -r email # This reads input from the user and stores it in the variable name
   if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
   then
-    sleep 3
-    sudo /opt/softether/vpncmd 127.0.0.1:5555
-    sleep 3
-    1
-    sleep 3
-    ServerCertSet
-    sleep 3
-    /etc/letsencrypt/live/"$ser"/fullchain.pem
-    sleep 3
-    /etc/letsencrypt/live/"$ser"/privkey.pemexit
-    sleep 3
-    exit
-    sleep 3
-    sudo systemctl restart softether-vpnserver
-    sleep 3
     printf 'Certificate successfully installed and VPN server restarted.\n'
   else
     printf 'Certificate installation failed.\n'
@@ -143,15 +128,15 @@ sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needres
 
 
 # Ask the user for confirmation before rebooting
-read -p "This script will reboot your system. Are you sure? [y/N] " -n 1 -r
-echo # (optional) move to a new line
+read -p "Do you want entering softether setting? [y/N] " -n 1 -r
+echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   # Reboot the system
-  reboot
+  sudo /opt/softether/vpncmd 127.0.0.1:5555
 else
   # Exit the script
-  echo "Reboot cancelled."
+  echo "Have FUN ;)."
   exit 0
 fi
 esac
