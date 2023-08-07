@@ -50,7 +50,7 @@
 >
 > ```[tasklist]
 >### My tasks
->- [X] Get ServerCertSet
+>- [X] Get Servercertificate
 >- [X] Disable update popup
 >- [ ] Set ServerCertSet 
 >- [ ] Adding BBR
