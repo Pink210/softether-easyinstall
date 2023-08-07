@@ -32,8 +32,7 @@
 > NOTE : Enter the code one line at a time. Don’t copy and paste everything.| replace "YourDomainName" with your domain name on lines 4,5.  | If you're already in Softether Settings, skip line 1 and start at line 2.
 > 
 > ```bash
-> sudo /opt/softether/vpncmd 127.0.0.1:5555
-> 1
+> echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
 > ServerCertSet
 > /etc/letsencrypt/live/YourDomainName/fullchain.pem
 > /etc/letsencrypt/live/YourDomainName/privkey.pem
