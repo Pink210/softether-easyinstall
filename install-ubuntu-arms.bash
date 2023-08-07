@@ -123,16 +123,16 @@ else
 fi
 
 
-#add needrestart back again
+#Add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
 
-# Ask the user for confirmation before rebooting
+#Ask the user for entering softether setting
 read -p "Do you want entering softether setting? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  # Reboot the system
+  #  entering softether setting
   echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
 else
   # Exit the script
