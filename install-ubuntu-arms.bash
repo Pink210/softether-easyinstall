@@ -133,7 +133,7 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   # Reboot the system
-  sudo /opt/softether/vpncmd 127.0.0.1:5555
+  echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
 else
   # Exit the script
   echo "Have FUN ;)."
