@@ -27,7 +27,19 @@
 > sudo /opt/softether/vpncmd 127.0.0.1:5555
 > ```
 > No need to set password in SoftEtherVPN setting. You can do it with SoftEther VPN Server Manager (Windows) later.
->
+> If you have a domain, however, you must configure the certificate in Softether Settings as follows:
+> 
+> NOTE : Enter the code one line at a time. Don’t copy and paste everything.| replace "YourDomainName" with your domain name on lines 4,5.  | If you're already in Softether Settings, skip line 1 and start at line 2.
+> 
+> ```bash
+> sudo /opt/softether/vpncmd 127.0.0.1:5555
+> 1
+> ServerCertSet
+> /etc/letsencrypt/live/YourDomainName/fullchain.pem
+> /etc/letsencrypt/live/YourDomainName/privkey.pem
+>exit
+> sudo systemctl restart softether-vpnserver
+> ```
 > It is not recommended to delete the log, but if you want,
 > ```bash
 > cd .. && cd opt/softether && rm -r packet_log security_log server_log
