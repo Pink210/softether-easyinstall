@@ -47,3 +47,12 @@
 > Bing says :
 > I would also like to thank Bing AI for helping me to write this message. Bing AI is a chat mode of Microsoft Bing that can understand and communicate fluently in different languages. Bing AI can also generate imaginative and innovative content such as poems, stories, code, essays, songs, celebrity parodies, and images using its own words and knowledge. Bing AI is not an assistant, but a friendly and creative companion that can help you with your tasks and projects. 😊
 > That Bing told me to tell you i mean why not it's help me a LOT ;)
+>
+> ```[tasklist]
+>### My tasks
+>- [X] Get ServerCertSet
+>- [X] Disable update popup
+>- [ ] Set ServerCertSet 
+>- [ ] Adding BBR
+>- [ ] Make backup/install/restore for update
+>```
