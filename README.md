@@ -8,6 +8,7 @@ This is a bash script that automates the installation and configuration of SoftE
 - [Install & Update](#install)
 - [Uninstall](#uninstall)
 - [Update](#update)
+- [Security](#security)
 - [Resources](#resources)
 - [Disclaimer](#disclaimer)
 - [certificate](#certificate)
@@ -47,10 +48,24 @@ The installation process may take several minutes depending on your system and n
 
 
 ## Uninstall
-<details>
-  <summary>Click here for Uninstall</summary>
 
-To uninstall SoftEther VPN Server from your system, you can follow these steps:
+<details>
+  <summary>Uninstall</summary>
+You can uninstall SoftetherVPN on your server automatically with the script or just do it manually by copying and past the code
+  
+<details>
+  <summary>automatically</summary>
+Use this code :
+
+```bash
+wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/Uninstall.bash  && chmod +x se-install && ./se-install
+```
+</details>
+
+<details>
+<summary>manually</summary>
+
+follow these steps:
 
 - Stop and disable the systemd service:
 
@@ -97,8 +112,13 @@ sudo ufw deny 8280
 sudo ufw deny 500,4500,8280,53/udp
 ```
 </details>
+</details>
 
 ## Update
+
+If you already have Softether installed on your server but want to update it to the last version you can use the install code.
+the script now makes a backup, update, and restore your backup.
+but is more safe to do it Manual or just make a backup with Softether Windows software.
 
 <details>
   <summary>Click here for an update SoftEther VPN Server Manual</summary>
@@ -141,12 +161,27 @@ sudo systemctl restart softether-vpnserver
 </details>
 
 
-## Close the ports
+## Security
 
+disable DDns(Dynamic DNS)
+<details>
+  <summary>Click here disable DDns</summary>
+You may disable DDns (Dynamic DNS) for further protection, but you must have a domain and a certificate to do so.
+```bash
+sed -i ‘s/^\tbool Disabled false/\tbool Disabled true/’ /opt/softether/vpn_server.config
+```
+```bash
+sed -i ‘s/^\tbool DisableNatTraversal false/\tbool DisableNatTraversal true/’ /opt/softether/vpn_server.config
+```
+```bash
+sudo systemctl restart softether-vpnserver
+```
+</details>
+
+Close the extra ports
 <details>
   <summary>Click here for details</summary>
   This script opens a lot of ports. I understand that opening several ports is harmful but I need it so... You may just use this code to close it.
-  
  ```bash
 sudo ufw deny 2280
 sudo ufw deny 2380
@@ -160,7 +195,7 @@ sudo ufw deny 8280
 
 </details>
 
-## certificate
+## Certificate
 
 If you have a domain, you must configure the certificate as follows in Softether Settings:
 <details>
