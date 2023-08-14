@@ -5,7 +5,7 @@ This is a bash script that automates the installation and configuration of SoftE
 ## Table of Contents
 
 - [Features](#features)
-- [Install](#install)
+- [Install & Update](#install)
 - [Uninstall](#uninstall)
 - [Update](#update)
 - [Resources](#resources)
@@ -25,7 +25,7 @@ This is a bash script that automates the installation and configuration of SoftE
 ## Install
 
 <details>
-  <summary>Click here for Install details</summary>
+  <summary>Click here for Install & Update details</summary>
 
 To install the script, simply copy and paste it on your Linux server in terminal
   
@@ -101,7 +101,7 @@ sudo ufw deny 500,4500,8280,53/udp
 ## Update
 
 <details>
-  <summary>Click here for update SoftEther VPN Server</summary>
+  <summary>Click here for an update SoftEther VPN Server Manual</summary>
 To update SoftEther VPN Server to the latest version, you can follow these steps:
 
 - Stop the systemd service:
@@ -194,8 +194,9 @@ For SoftEtherVPN setting :
 - [X] Get Servercertificate
 - [X] Disable update popup
 - [ ] Set ServerCertSet 
-- [ ] Adding BBR
-- [ ] Make backup/install/restore for update into the script
+- [x] Adding BBR
+- [x] Make backup/install/restore for update into the script
+- [x] Uninstall script
 ```
 ## Resources
 
