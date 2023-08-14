@@ -9,18 +9,31 @@ case "$response" in
 #remove needrestart for less interruption 
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
+#backup for safty
+sudo cp /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
+sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
+
+
 # REMOVE PREVIOUS INSTALL
+
 # Check for SE install folder
 if [ -d "/opt/vpnserver" ]; then
   sudo systemctl stop softether-vpnserver.service
-  sudo systemctl stop softether-vpnserver
   sleep 3
   sudo cp /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
-  sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
   sudo rm -rf /opt/vpnserver
+fi
+
+# Check for Update
+if [ -d "/opt/softether" ]; then
+  sudo systemctl stop softether-vpnserver
+  sleep 3
+  sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
+  sleep 2
   sudo rm -rf /opt/softether
 fi
+
 
 # Check for init script
 if
