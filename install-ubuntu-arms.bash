@@ -2,7 +2,7 @@
 (( EUID != 0 )) && exec sudo -- "$0" "$@"
 clear
 # User confirmation
-read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.42-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want continue ? [[y/N]] ' response
+read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.41-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want continue ? [[y/N]] ' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
@@ -10,18 +10,38 @@ case "$response" in
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
 # REMOVE PREVIOUS INSTALL
-# Check for SE install folder
+
+# Check for the original version
 if [ -d "/opt/vpnserver" ]; then
-  rm -rf /opt/vpnserver > /dev/null 2>&1
+  echo "Softether is already installed. The script is attempting to create a backup."
+  echo "USE 'Ctrl + C' to cancel it."
+  sudo systemctl stop softether-vpnserver.service
+  sleep 2
+  sudo mkdir /opt/backup
+  sleep 2
+  sudo cp -f /opt/vpnserver/vpn_server.config /opt/backup/vpn_server.config.bak
+  sleep 2
+  sudo cp -rf /opt/vpnserver/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
+  sleep 2
+  sudo rm -rf /opt/vpnserver
+  sudo systemctl disable vpnserver
 fi
 
-# Check for init script
-if
-  [ -f "/etc/init.d/vpnserver" ]; then rm /etc/init.d/vpnserver;
+# Check for Update script
+if [ -d "/opt/softether" ]; then
+  echo "Softether is already installed. The script is attempting to create a backup."
+  echo "USE 'Ctrl + C' to cancel it."
+  sudo systemctl stop softether-vpnserver
+  sleep 2
+  sudo mkdir /opt/backup
+  sleep 2
+  sudo cp -f /opt/softether/vpn_server.config /opt/backup/vpn_server.config.bak
+  sleep 2
+  sudo cp -rf /opt/softether/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
+  sleep 2
+  sudo rm -rf /opt/softether
+  sudo systemctl disable softether-vpnserver
 fi
-
-# Remove vpnserver from systemd
-systemctl disable vpnserver > /dev/null 2>&1
 
 # Start from here
 # Perform apt update & install necessary software
@@ -34,6 +54,26 @@ sleep 2
 # Install dependency
 sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev || exit
 sleep 2
+
+#SET certificate
+read -rp "Do you want to set a certificate on your server? 'y' or 'n' " -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  printf 'enter your domain name?\n'
+  read -r ser # This reads input from the user and stores it in the variable name
+  printf 'enter your email address?\n'
+  read -r email # This reads input from the user and stores it in the variable name
+  if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
+  then
+    printf 'Certificate successfully installed and VPN server restarted.\n'
+  else
+    printf 'Certificate installation failed.\n'
+  fi  
+else
+  printf 'Certificate installation skipped.\n'
+fi
+
 
 # Download SoftEther | Version 4.42 | Build 9798
 wget https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Linux/SoftEther_VPN_Server/64bit_-_ARM_64bit/softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-arm64-64bit.tar.gz || exit
@@ -102,38 +142,32 @@ sudo ufw allow 8280
 sudo ufw allow 500,4500,8280,53/udp
 sleep 5
 
-
-#SET certificate
-read -rp "Do you want to set certificate on your server? " -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  printf 'enter your domain name?\n'
-  read -r ser # This reads input from the user and stores it in the variable name
-  printf 'enter your email address?\n'
-  read -r email # This reads input from the user and stores it in the variable name
-  if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
-  then
-    printf 'Certificate successfully installed and VPN server restarted.\n'
-  else
-    printf 'Certificate installation failed.\n'
-  fi  
-else
-  printf 'Certificate installation skipped.\n'
+# Restore backup
+if [ -d "/opt/backup" ]; then
+  echo "Restoring backup."
+  sudo systemctl stop softether-vpnserver
+  sudo cp -f /opt/backup/vpn_server.config.bak /opt/softether/vpn_server.config
+  sudo cp -rf /opt/backup/backup.vpn_server.config /opt/softether/
+  sudo systemctl restart softether-vpnserver
 fi
 
 
-#Add needrestart back again
+#add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
 
-#Ask the user for entering softether setting
-read -p "Do you want entering softether setting? [y/N] " -n 1 -r
+# Ask the user for installing BBR
+read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  #  entering softether setting
-  echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
+  # installing
+    echo "net.core.default_qdisc=fq" | tee -a /etc/sysctl.conf
+    echo "net.ipv4.tcp_congestion_control=bbr" | tee -a /etc/sysctl.conf
+    # Apply changes
+    sysctl -p
+    
+    echo "Have FUN ;)."
 else
   # Exit the script
   echo "Have FUN ;)."
