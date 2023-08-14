@@ -13,30 +13,29 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 
 # Check for the original version
 if [ -d "/opt/vpnserver" ]; then
+  echo "backup"
   sudo systemctl stop softether-vpnserver.service
   sleep 3
   sudo cp -f /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
+  sudo cp -rf /opt/vpnserver/backup.vpn_server.config /opt/backup.vpn_server.config 
+  sleep 2
   sudo rm -rf /opt/vpnserver
+  sudo systemctl disable vpnserver
 fi
 
 # Check for Update script
 if [ -d "/opt/softether" ]; then
+  echo "backup"
   sudo systemctl stop softether-vpnserver
   sleep 3
   sudo cp -f /opt/softether/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
+  sudo cp -rf /opt/softether/backup.vpn_server.config /opt/backup.vpn_server.config 
+  sleep 2
   sudo rm -rf /opt/softether
+  sudo systemctl disable softether-vpnserver
 fi
-
-
-# Check for init script
-if
-  [ -f "/etc/init.d/vpnserver" ]; then rm /etc/init.d/vpnserver;
-fi
-
-# Remove vpnserver from systemd
-systemctl disable vpnserver > /dev/null 2>&1
 
 # Start from here
 # Perform apt update & install necessary software
@@ -140,7 +139,8 @@ sleep 5
 # Restore backup
 if [ -d "/opt/vpn_server.config.bak" ]; then
   echo "Restore backup."
-  sudo cp -i /opt/vpn_server.config.bak /opt/softether/vpn_server.config
+  sudo cp -f /opt/vpn_server.config.bak /opt/softether/vpn_server.config
+  sudo cp -rf /opt/backup.vpn_server.config /opt/softether/backup.vpn_server.config
   sudo systemctl restart softether-vpnserver
 fi
 
@@ -150,7 +150,7 @@ sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needres
 
 
 # Ask the user for installing BBR
-read -p "Do you want entering softether setting? [y/N] " -n 1 -r
+read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
