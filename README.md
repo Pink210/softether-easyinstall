@@ -234,6 +234,7 @@ For SoftEtherVPN setting :
 - [x] Adding BBR
 - [x] Make backup/install/restore for update into the script
 - [x] Uninstall script
+- [ ] install any other version of Softether
 ```
 ## Resources
 
