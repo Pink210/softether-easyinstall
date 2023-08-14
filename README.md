@@ -167,6 +167,7 @@ disable DDns(Dynamic DNS)
 <details>
   <summary>Click here disable DDns</summary>
 You may disable DDns (Dynamic DNS) for further protection, but you must have a domain and a certificate to do so.
+  
 ```bash
 sed -i ‘s/^\tbool Disabled false/\tbool Disabled true/’ /opt/softether/vpn_server.config
 ```
@@ -176,6 +177,7 @@ sed -i ‘s/^\tbool DisableNatTraversal false/\tbool DisableNatTraversal true/�
 ```bash
 sudo systemctl restart softether-vpnserver
 ```
+
 </details>
 
 Close the extra ports
