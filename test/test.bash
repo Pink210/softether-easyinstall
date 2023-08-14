@@ -13,7 +13,8 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 
 # Check for the original version
 if [ -d "/opt/vpnserver" ]; then
-  echo "making backup"
+  echo "Softether is already installed. The script is attempting to create a backup."
+  echo "USE 'Ctrl + C' to cancel it."
   sudo systemctl stop softether-vpnserver.service
   sleep 2
   sudo mkdir /opt/backup
@@ -28,7 +29,8 @@ fi
 
 # Check for Update script
 if [ -d "/opt/softether" ]; then
-  echo "making backup"
+  echo "Softether is already installed. The script is attempting to create a backup."
+  echo "USE 'Ctrl + C' to cancel it."
   sudo systemctl stop softether-vpnserver
   sleep 2
   sudo mkdir /opt/backup
@@ -54,7 +56,7 @@ sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev
 sleep 2
 
 #SET certificate
-read -rp "Do you want to set certificate on your server? " -n 1 REPLY
+read -rp "Do you want to set a certificate on your server? 'y' or 'n' " -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -142,7 +144,7 @@ sleep 5
 
 # Restore backup
 if [ -d "/opt/backup" ]; then
-  echo "Restore backup."
+  echo "Restoring backup."
   sudo systemctl stop softether-vpnserver
   sudo cp -f /opt/backup/vpn_server.config.bak /opt/softether/vpn_server.config
   sudo cp -rf /opt/backup/backup.vpn_server.config /opt/softether/
