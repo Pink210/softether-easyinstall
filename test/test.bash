@@ -9,27 +9,22 @@ case "$response" in
 #remove needrestart for less interruption 
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
-#backup for safty
-sudo cp /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
-sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
-
-
 # REMOVE PREVIOUS INSTALL
 
-# Check for SE install folder
+# Check for the original version
 if [ -d "/opt/vpnserver" ]; then
   sudo systemctl stop softether-vpnserver.service
   sleep 3
-  sudo cp /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
+  sudo cp -f /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
   sudo rm -rf /opt/vpnserver
 fi
 
-# Check for Update
+# Check for Update script
 if [ -d "/opt/softether" ]; then
   sudo systemctl stop softether-vpnserver
   sleep 3
-  sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
+  sudo cp -f /opt/softether/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
   sudo rm -rf /opt/softether
 fi
@@ -143,7 +138,12 @@ sudo ufw allow 500,4500,8280,53/udp
 sleep 5
 
 # Restore backup
-sudo cp /opt/vpn_server.config.bak /opt/softether/vpn_server.config
+if [ -d "/opt/vpn_server.config.bak" ]; then
+  echo "Restore backup."
+  sudo cp -i /opt/vpn_server.config.bak /opt/softether/vpn_server.config
+  sudo systemctl restart softether-vpnserver
+fi
+
 
 #add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
