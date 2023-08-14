@@ -25,9 +25,9 @@ This is a bash script that automates the installation and configuration of SoftE
 ## Install
 
 <details>
-  <summary>Click for Install details</summary>
-To use this script, you need to have root privileges or be able to run commands with sudo.
-To install the script, simply copy and paste it on your Linux server in terminal:
+  <summary>Click here for Install details</summary>
+
+To install the script, simply copy and paste it on your Linux server in terminal
   
 #### FOR AMD / INTEL CPU
 ```bash
@@ -37,17 +37,18 @@ wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinsta
 ```bash
 wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/install-ubuntu-arms.bash  && chmod +x se-install && ./se-install
 ```
+
+There is no need to configure SoftEtherVPN with a password. Later, you can use SoftEther VPN Server Manager (Windows).
+To use this script, you need to have root privileges or be able to run commands with sudo.
+The script will ask you for confirmation before proceeding with the installation. It will also ask you if you want to set up a certificate from Let's Encrypt and if you want to enter the SoftEther VPN Server settings.
+The installation process may take several minutes depending on your system and network speed. After the installation is complete, you can use the vpncmd tool to configure your VPN server. For more information on how to use vpncmd, please refer to the [official documentation](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual).
+
 </details>
 
 
-
-The script will ask you for confirmation before proceeding with the installation. It will also ask you if you want to set up a certificate from Let's Encrypt and if you want to enter the SoftEther VPN Server settings.
-
-The installation process may take several minutes depending on your system and network speed. After the installation is complete, you can use the vpncmd tool to configure your VPN server. For more information on how to use vpncmd, please refer to the [official documentation](https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual).
-
 ## Uninstall
 <details>
-  <summary>Click for Uninstall</summary>
+  <summary>Click here for Uninstall</summary>
 
 To uninstall SoftEther VPN Server from your system, you can follow these steps:
 
@@ -100,7 +101,7 @@ sudo ufw deny 500,4500,8280,53/udp
 ## Update
 
 <details>
-  <summary>Click for update SoftEther VPN Server</summary>
+  <summary>Click here for update SoftEther VPN Server</summary>
 To update SoftEther VPN Server to the latest version, you can follow these steps:
 
 - Stop the systemd service:
@@ -142,9 +143,9 @@ sudo systemctl restart softether-vpnserver
 
 ## Close the ports
 
-This script opens a lot of ports. I understand that opening several ports is harmful but I need it so... You may just use this code to close it.
 <details>
-  <summary>Click for close the ports</summary>
+  <summary>Click here for details</summary>
+  This script opens a lot of ports. I understand that opening several ports is harmful but I need it so... You may just use this code to close it.
   
  ```bash
 sudo ufw deny 2280
@@ -159,14 +160,13 @@ sudo ufw deny 8280
 
 </details>
 
-There is no need to configure SoftEtherVPN with a password. Later, you can use SoftEther VPN Server Manager (Windows).
-If you have a domain, you must configure the certificate as follows in Softether Settings:
-
 ## certificate
-NOTE: Only enter one line of code at a time. Do not simply copy and paste everything.| On line 4,5, replace "YourDomainName" with your domain name. Skip line 1 and start at line 2 if you're currently in Softether Settings.
 
+If you have a domain, you must configure the certificate as follows in Softether Settings:
 <details>
   <summary>Click here for details</summary>
+NOTE: Only enter one line of code at a time. Do not simply copy and paste everything.| On line 4,5, replace "YourDomainName" with your domain name. Skip line 1 and start at line 2 if you're currently in Softether Settings.
+  
 ```bash
  echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
  ServerCertSet
@@ -178,7 +178,7 @@ NOTE: Only enter one line of code at a time. Do not simply copy and paste everyt
 </details>
 
 ## Other
-It is not advised that you remove the log, although you may do so if you so choose:
+It is not advised that you remove the log, although you may do so:
 
  ```bash
  cd .. && cd opt/softether && rm -r packet_log security_log server_log
