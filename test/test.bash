@@ -13,10 +13,13 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 # Check for SE install folder
 if [ -d "/opt/vpnserver" ]; then
   sudo systemctl stop softether-vpnserver.service
+  sudo systemctl stop softether-vpnserver
   sleep 3
   sudo cp /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
+  sudo cp /opt/softether/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
   sudo rm -rf /opt/vpnserver
+  sudo rm -rf /opt/softether
 fi
 
 # Check for init script
@@ -127,7 +130,7 @@ sudo ufw allow 500,4500,8280,53/udp
 sleep 5
 
 # Restore backup
-sudo cp /opt/vpn_server.config.bak /opt/vpnserver/vpn_server.config
+sudo cp /opt/vpn_server.config.bak /opt/softether/vpn_server.config
 
 #add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
