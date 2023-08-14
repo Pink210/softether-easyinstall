@@ -21,7 +21,7 @@ This is a bash script that automates the installation and configuration of SoftE
 - Enables IPv4 forwarding for VPN traffic.
 - Opens the necessary ports for VPN protocols using ufw firewall.
 - Optionally, sets up a certificate from Let's Encrypt using certbot for secure VPN connections.
-- Optionally, installs BBR (SOON).
+- Optionally, installs BBR.
 
 ## Install
 
