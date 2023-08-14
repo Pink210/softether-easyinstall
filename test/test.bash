@@ -13,12 +13,14 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 
 # Check for the original version
 if [ -d "/opt/vpnserver" ]; then
-  echo "backup"
+  echo "making backup"
   sudo systemctl stop softether-vpnserver.service
-  sleep 3
-  sudo cp -f /opt/vpnserver/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
-  sudo cp -rf /opt/vpnserver/backup.vpn_server.config /opt/backup.vpn_server.config 
+  sudo mkdir /opt/backup
+  sleep 2
+  sudo cp -f /opt/vpnserver/vpn_server.config /opt/backup/vpn_server.config.bak
+  sleep 2
+  sudo cp -rf /opt/vpnserver/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
   sleep 2
   sudo rm -rf /opt/vpnserver
   sudo systemctl disable vpnserver
@@ -26,12 +28,14 @@ fi
 
 # Check for Update script
 if [ -d "/opt/softether" ]; then
-  echo "backup"
+  echo "making backup"
   sudo systemctl stop softether-vpnserver
-  sleep 3
-  sudo cp -f /opt/softether/vpn_server.config /opt/vpn_server.config.bak
   sleep 2
-  sudo cp -rf /opt/softether/backup.vpn_server.config /opt/backup.vpn_server.config 
+  sudo mkdir /opt/backup
+  sleep 2
+  sudo cp -f /opt/softether/vpn_server.config /opt/backup/vpn_server.config.bak
+  sleep 2
+  sudo cp -rf /opt/softether/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
   sleep 2
   sudo rm -rf /opt/softether
   sudo systemctl disable softether-vpnserver
@@ -137,10 +141,11 @@ sudo ufw allow 500,4500,8280,53/udp
 sleep 5
 
 # Restore backup
-if [ -d "/opt/vpn_server.config.bak" ]; then
+if [ -d "/opt/backup" ]; then
   echo "Restore backup."
-  sudo cp -f /opt/vpn_server.config.bak /opt/softether/vpn_server.config
-  sudo cp -rf /opt/backup.vpn_server.config /opt/softether/backup.vpn_server.config
+  sudo systemctl stop softether-vpnserver
+  sudo cp -f /opt/backup/vpn_server.config.bak /opt/softether/vpn_server.config
+  sudo cp -rf /opt/backup/backup.vpn_server.config /opt/softether/
   sudo systemctl restart softether-vpnserver
 fi
 
