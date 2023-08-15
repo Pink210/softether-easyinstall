@@ -22,6 +22,11 @@ then
     sleep 2
     sudo rm -rf /opt/vpnserver
     sudo systemctl disable vpnserver
+    sudo rm /etc/systemd/system/softether-vpnserver.service
+    sleep 2
+    sudo systemctl daemon-reload
+    clear
+    echo "Uninstall Complete."
   else 
     echo "Uninstalling ..."
     sudo systemctl stop softether-vpnserver
@@ -34,7 +39,10 @@ then
     sleep 2
     sudo rm -rf /opt/softether
     sudo systemctl disable softether-vpnserver
+    sudo rm /etc/systemd/system/softether-vpnserver.service
     sudo systemctl daemon-reload
+    clear
+    echo "Uninstall Complete."
 else
 echo "Softether is not installed on this server."
 fi
