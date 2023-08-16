@@ -5,7 +5,6 @@ green='\033[0;32m'
 yellow='\033[0;33m'
 plain='\033[0m'
 clear
-echo -e "${red}Hello ;) ${plain}"
 # User confirmation
 read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.41-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want to continue? [[y/N]] ' response
 case "$response" in
@@ -17,8 +16,8 @@ sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needres
 # REMOVE PREVIOUS INSTALL
 # Check for the original version
 if [ -d "/opt/vpnserver" ]; then
-  echo "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
-  echo "${red}USE 'Ctrl + C' to cancel it.${plain}"
+  echo -e "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
+  echo -e "${red}USE 'Ctrl + C' to cancel it.${plain}"
   sudo systemctl stop softether-vpnserver.service
   sleep 2
   sudo mkdir /opt/backup
@@ -33,8 +32,8 @@ fi
 
 # Check for Update script
 if [ -d "/opt/softether" ]; then
-  echo "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
-  echo "${red}USE 'Ctrl + C' to cancel it.${plain}"
+  echo -e "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
+  echo -e "${red}USE 'Ctrl + C' to cancel it.${plain}"
   sudo systemctl stop softether-vpnserver
   sleep 2
   sudo mkdir /opt/backup
@@ -50,25 +49,25 @@ fi
 # Start from here
 # Perform apt update & install necessary software
 clear
-echo "${green}Updating Linux server.${plain}"
+echo -e "${green}Updating Linux server.${plain}"
 sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y upgrade -y && sudo apt-get autoremove -y 
 sleep 2
 
 
 # Install some useful tools
 clear
-echo "${green}Install some useful tools.${plain}"
+echo -e "${green}Install some useful tools.${plain}"
 sudo apt-get install -y certbot && sudo apt-get install -y ncat && sudo apt-get install -y net-tools
 sleep 2
 # Install dependency
 clear
-echo "${green}Install dependency.${plain}"
+echo -e "${green}Install dependency.${plain}"
 sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev || exit
 sleep 2
 
 #SET certificate
 clear
-read -rp "${red}Do you want to set a certificate on your server? 'y' or 'n' ${plain}" -n 1 REPLY
+read -rp "Do you want to set a certificate on your server? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -78,17 +77,17 @@ then
   read -r email # This reads input from the user and stores it in the variable name
   if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
   then
-    echo "${green}Certificate successfully installed and VPN server restarted.${plain}.\n"
+    echo -e "${green}Certificate successfully installed and VPN server restarted.${plain}.\n"
   else
-    echo "${red}Certificate installation failed.${plain}.\n"
+    echo -e "${red}Certificate installation failed.${plain}.\n"
   fi  
 else
-  echo "${yellow}Certificate installation skipped.${plain}.\n"
+  echo -e "${yellow}Certificate installation skipped.${plain}.\n"
 fi
 
 
 # Download SoftEther | Version 4.42 | Build 9798
-echo "${green}Download & Install SoftEther | Version 4.42 | Build 9798.${plain}.\n"
+echo -e "${green}Download & Install SoftEther | Version 4.42 | Build 9798.${plain}.\n"
 wget https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-x64-64bit.tar.gz || exit
 sleep 2
 tar xvf softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-x64-64bit.tar.gz || exit
@@ -109,7 +108,7 @@ sudo /opt/softether/vpnserver stop || exit
 sleep 5
 
 # Create the service file with the desired content
-echo "${green}Create the service file.${plain}.\n"
+echo -e "${green}Create the service file.${plain}.\n"
 sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << 'EOF'
 [Unit]
 Description=SoftEther VPN server
@@ -140,7 +139,7 @@ sleep 2
 cat /proc/sys/net/ipv4/ip_forward || exit
 
 # Openig port
-echo "${green}Openig port.${plain}.\n"
+echo -e "${green}Openig port.${plain}.\n"
 sudo ufw allow 22
 sudo ufw allow 53
 sudo ufw allow 2280
@@ -161,7 +160,7 @@ sleep 5
 # Restore backup
 if [ -d "/opt/backup" ]; then
   clear
-  echo "${green}Restoring backup.${plain}.\n"
+  echo -e "${green}Restoring backup.${plain}.\n"
   sudo systemctl stop softether-vpnserver
   sudo cp -f /opt/backup/vpn_server.config.bak /opt/softether/vpn_server.config
   sudo cp -rf /opt/backup/backup.vpn_server.config /opt/softether/
@@ -170,7 +169,7 @@ fi
 
 clear
 #security Close the extra ports
-read -rp "${red}Do you want to Close the extra ports? 'y' or 'n' ${plain}" -n 1 REPLY
+read -rp "Do you want to Close the extra ports? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -182,22 +181,23 @@ then
   sudo ufw deny 1701
   sudo ufw deny 500
   sudo ufw deny 8280
-  echo "${green}Close the extra ports Successfully ${plain}.\n"
+  echo -e "${green}Close the extra ports Successfully ${plain}.\n"
 else
-  echo "${red}Dynamic DNS Disable skipped ${plain}.\n"
+  echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
 #Security Dynamic DNS 
-read -rp "${red}Do you want to Disable Dynamic DNS? (You need Domain)(IMPORTANT) 'y' or 'n' ${plain}" -n 1 REPLY
+echo -e "${red} IMPORTANT IF YOU DON'T KNOW, SKIP IT ${plain}."
+read -rp "Do you want to Disable Dynamic DNS? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   sed -i 's/bool Disabled false/bool Disabled true/g' /opt/softether/vpn_server.config
   sed -i 's/bool DisableNatTraversal false/bool DisableNatTraversal true/g' /opt/softether/vpn_server.config
   sudo systemctl restart softether-vpnserver
-  echo "${green}Dynamic DNS Disable Successfully ${plain}.\n"
+  echo -e "${green}Dynamic DNS Disable Successfully ${plain}.\n"
 else
-  echo "${red}Dynamic DNS Disable skipped ${plain}.\n"
+  echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
 #add needrestart back again
@@ -205,6 +205,7 @@ sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needres
 
 clear
 # Ask the user for installing BBR
+echo -e "${red}BBR is optimize for TCP connection. ${plain}.\n"
 read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
