@@ -184,6 +184,7 @@ Close the extra ports
 <details>
   <summary>Click here for details</summary>
   This script opens a lot of ports. I understand that opening several ports is harmful but I need it so... You may just use this code to close it.
+  
  ```bash
 sudo ufw deny 2280
 sudo ufw deny 2380
