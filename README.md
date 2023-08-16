@@ -20,6 +20,7 @@ This is a bash script that automates the installation and configuration of SoftE
 - Creates a systemd service for SoftEther VPN Server and enables it to start on boot.
 - Enables IPv4 forwarding for VPN traffic.
 - Opens the necessary ports for VPN protocols using ufw firewall.
+- Update  SoftEther VPN Server without losing config(Be careful)
 - Optionally, sets up a certificate from Let's Encrypt using Certbot for secure VPN connections.
 - Optionally, installs BBR.
 - Optionally, disable DDns(Dynamic DNS)
