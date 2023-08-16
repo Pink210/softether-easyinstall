@@ -5,6 +5,7 @@ green='\033[0;32m'
 yellow='\033[0;33m'
 plain='\033[0m'
 clear
+echo -e "${red}Hello ;) ${plain}"
 # User confirmation
 read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.41-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want to continue? [[y/N]] ' response
 case "$response" in
