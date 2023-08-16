@@ -167,6 +167,37 @@ if [ -d "/opt/backup" ]; then
   sudo systemctl restart softether-vpnserver
 fi
 
+clear
+#security Close the extra ports
+read -rp "${red}Do you want to Close the extra ports? 'y' or 'n' ${plain}" -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  sudo ufw deny 2280
+  sudo ufw deny 2380
+  sudo ufw deny 1194
+  sudo ufw deny 2080
+  sudo ufw deny 4500
+  sudo ufw deny 1701
+  sudo ufw deny 500
+  sudo ufw deny 8280
+  echo "${green}Close the extra ports Successfully ${plain}.\n"
+else
+  echo "${red}Dynamic DNS Disable skipped ${plain}.\n"
+fi
+
+#Security Dynamic DNS 
+read -rp "${red}Do you want to Disable Dynamic DNS? (You need Domain)(IMPORTANT) 'y' or 'n' ${plain}" -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  sed -i 's/bool Disabled false/bool Disabled true/g' /opt/softether/vpn_server.config
+  sed -i 's/bool DisableNatTraversal false/bool DisableNatTraversal true/g' /opt/softether/vpn_server.config
+  sudo systemctl restart softether-vpnserver
+  echo "${green}Dynamic DNS Disable Successfully ${plain}.\n"
+else
+  echo "${red}Dynamic DNS Disable skipped ${plain}.\n"
+fi
 
 #add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
