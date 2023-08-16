@@ -216,10 +216,12 @@ then
     # Apply changes
     sysctl -p
     clear
+    echo -e "${red} USE 'echo "1" | /opt/softether/vpncmd 127.0.0.1:5555' FOR Softether Setting ${plain}"
     echo "Have FUN ;)."
 else
   # Exit the script
   clear
+  echo -e "${red} USE 'echo "1" | /opt/softether/vpncmd 127.0.0.1:5555' FOR Softether Setting ${plain}"
   echo "Have FUN ;)."
   exit 0
 fi
