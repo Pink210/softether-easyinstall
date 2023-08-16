@@ -15,13 +15,14 @@ This is a bash script that automates the installation and configuration of SoftE
 
 ## Features
 
-- Updates your Linux system and installs some useful tools such as certbot, ncat, and net-tools.
+- Updates your Linux system and installs some useful tools such as Certbot, Ncat, and Net-tools.
 - Downloads and compiles the latest version of SoftEther VPN Server (v4.42-9798-rtm-2023.06.30) from the official website.
 - Creates a systemd service for SoftEther VPN Server and enables it to start on boot.
 - Enables IPv4 forwarding for VPN traffic.
 - Opens the necessary ports for VPN protocols using ufw firewall.
-- Optionally, sets up a certificate from Let's Encrypt using certbot for secure VPN connections.
+- Optionally, sets up a certificate from Let's Encrypt using Certbot for secure VPN connections.
 - Optionally, installs BBR.
+- Optionally, disable DDns(Dynamic DNS)
 
 ## Install
 
@@ -163,6 +164,7 @@ sudo systemctl restart softether-vpnserver
 
 ## Security
 
+now you can disable DDns from auto-installer
 disable DDns(Dynamic DNS)
 <details>
   <summary>Click here disable DDns</summary>
@@ -179,7 +181,7 @@ sudo systemctl restart softether-vpnserver
 ```
 
 </details>
-
+now you can Close the extra ports from auto-installer
 Close the extra ports
 <details>
   <summary>Click here for details</summary>
@@ -229,13 +231,16 @@ For SoftEtherVPN setting :
 
 ```[tasklist]
 ### My tasks
-- [X] Get Servercertificate
+- [X] Get Server certificate
 - [X] Disable update popup
 - [ ] Set ServerCertSet 
 - [x] Adding BBR
 - [x] Make backup/install/restore for update into the script
 - [x] Uninstall script
 - [ ] install any other version of Softether
+- [x] adding disable DDns into the script
+- [x] adding Close the extra ports into the script
+- [ ] renew Server certificate
 ```
 ## Resources
 
