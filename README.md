@@ -238,10 +238,11 @@ For SoftEtherVPN setting :
 - [x] Adding BBR
 - [x] Make backup/install/restore for update into the script
 - [x] Uninstall script
-- [ ] install any other version of Softether
-- [x] adding disable DDns into the script
-- [x] adding Close the extra ports into the script
-- [ ] renew Server certificate
+- [ ] Install any other version of Softether
+- [x] Adding disable DDns into the script
+- [x] Adding Close the extra ports into the script
+- [ ] Renew Server certificate
+- [ ] Make script for Restart client traffic
 ```
 ## Resources
 
