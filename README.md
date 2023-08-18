@@ -11,7 +11,7 @@ This is a bash script that automates the installation and configuration of SoftE
 - [Security](#security)
 - [Resources](#resources)
 - [Disclaimer](#disclaimer)
-- [certificate](#certificate)
+- [Certificate](#certificate)
 
 ## Features
 
@@ -226,8 +226,10 @@ It is not advised that you remove the log, although you may do so:
  ```
 
 For SoftEtherVPN setting :
+just type vpncmd in the Linux terminal 
+
  ```bash
-/opt/softether/vpncmd 127.0.0.1:5555
+vpncmd
  ```
 
 ```[tasklist]
@@ -235,14 +237,15 @@ For SoftEtherVPN setting :
 - [X] Get Server certificate
 - [X] Disable update popup
 - [ ] Set ServerCertSet 
-- [x] Adding BBR
-- [x] Make backup/install/restore for update into the script
-- [x] Uninstall script
+- [X] Adding BBR
+- [X] Make backup/install/restore for update into the script
+- [X] Uninstall script
 - [ ] Install any other version of Softether
-- [x] Adding disable DDns into the script
-- [x] Adding Close the extra ports into the script
+- [X] Adding disable DDns into the script
+- [X] Adding Close the extra ports into the script
 - [ ] Renew Server certificate
-- [ ] Make script for Restart client traffic
+- [ ] Make a script for restarting client traffic
+- [X] Make a shortcut for the SoftEtherVPN setting
 ```
 ## Resources
 
