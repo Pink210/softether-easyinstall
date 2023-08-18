@@ -168,7 +168,7 @@ if [ -d "/opt/backup" ]; then
 fi
 
 clear
-#security Close the extra ports
+# Security Close the extra ports
 read -rp "Do you want to Close the extra ports? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -186,7 +186,7 @@ else
   echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
-#Security Dynamic DNS 
+# Security Dynamic DNS 
 echo -e "${red} IMPORTANT IF YOU DON'T KNOW, SKIP IT ${plain}."
 read -rp "Do you want to Disable Dynamic DNS? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
@@ -200,11 +200,16 @@ else
   echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
-#add needrestart back again
+# Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
+#Adding shortcut for Softether setting
+alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'
+echo "alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'" >> ~/.bashrc
+
+
 clear
-# Ask the user for installing BBR
+# Ask the user to install BBR
 echo -e "${red}BBR is optimize for TCP connection. ${plain}.\n"
 read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
@@ -216,12 +221,12 @@ then
     # Apply changes
     sysctl -p
     clear
-    echo -e "${red} USE 'echo "1" | /opt/softether/vpncmd 127.0.0.1:5555' FOR Softether Setting ${plain}"
+    echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
     echo "Have FUN ;)."
 else
   # Exit the script
   clear
-  echo -e "${red} USE 'echo "1" | /opt/softether/vpncmd 127.0.0.1:5555' FOR Softether Setting ${plain}"
+  echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
   echo "Have FUN ;)."
   exit 0
 fi
