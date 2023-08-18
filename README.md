@@ -227,7 +227,7 @@ It is not advised that you remove the log, although you may do so:
 
 For SoftEtherVPN setting :
  ```bash
- echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
+/opt/softether/vpncmd 127.0.0.1:5555
  ```
 
 ```[tasklist]
