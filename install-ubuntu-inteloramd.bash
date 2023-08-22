@@ -192,6 +192,7 @@ read -rp "Do you want to Disable Dynamic DNS? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
+  sudo systemctl stop softether-vpnserver
   sed -i 's/bool Disabled false/bool Disabled true/g' /opt/softether/vpn_server.config
   sed -i 's/bool DisableNatTraversal false/bool DisableNatTraversal true/g' /opt/softether/vpn_server.config
   sudo systemctl restart softether-vpnserver
