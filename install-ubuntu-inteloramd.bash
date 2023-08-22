@@ -201,32 +201,11 @@ else
   echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
-# # Reset client traffic
-# read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
-# printf '\n' # (optional) move to a new line
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#   sudo systemctl stop softether-vpnserver
-#   sed -i 's/\(uint64 BroadcastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-#   sleep 1
-#   sed -i 's/\(uint64 BroadcastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-#   sleep 1
-#   sed -i 's/\(uint64 UnicastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-#   sleep 1
-#   sed -i 's/\(uint64 UnicastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-#   sleep 1
-#   sudo systemctl restart softether-vpnserver
-#   echo -e "${green}Reset client traffic Successfully ${plain}.\n"
-# else
-#   echo -e "${red}Reset client traffic skipped ${plain}.\n"
-# fi
-
 # Reset client traffic
-if [ -d "/opt/backup" ]; then
-  read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
-  printf '\n' # (optional) move to a new line
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
+read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
   sudo systemctl stop softether-vpnserver
   sed -i 's/\(uint64 BroadcastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
   sleep 1
@@ -238,10 +217,9 @@ if [ -d "/opt/backup" ]; then
   sleep 1
   sudo systemctl restart softether-vpnserver
   echo -e "${green}Reset client traffic Successfully ${plain}.\n"
-  else
+else
   echo -e "${red}Reset client traffic skipped ${plain}.\n"
 fi
-
 
 
 # Add need-restart back again
