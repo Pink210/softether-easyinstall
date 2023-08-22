@@ -183,7 +183,7 @@ then
   sudo ufw deny 8280
   echo -e "${green}Close the extra ports Successfully ${plain}.\n"
 else
-  echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
+  echo -e "${red}Close the extra ports skipped ${plain}.\n"
 fi
 
 #Security Dynamic DNS 
@@ -201,6 +201,7 @@ else
 fi
 
 # Reset client traffic
+echo -e "${red}Skip it if is fresh install${plain}.\n"
 read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -219,7 +220,7 @@ then
 else
   echo -e "${red}Reset client traffic skipped ${plain}.\n"
 fi
-
+  sleep 3
 
 
 # Add need-restart back again
