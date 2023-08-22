@@ -191,6 +191,7 @@ read -rp "Do you want to Disable Dynamic DNS? (You need Domain)(IMPORTANT) 'y' o
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
+  sudo systemctl stop softether-vpnserver
   sed -i 's/bool Disabled false/bool Disabled true/g' /opt/softether/vpn_server.config
   sed -i 's/bool DisableNatTraversal false/bool DisableNatTraversal true/g' /opt/softether/vpn_server.config
   sudo systemctl restart softether-vpnserver
@@ -198,6 +199,27 @@ then
 else
   echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
+
+# Reset client traffic
+read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
+printf '\n' # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  sudo systemctl stop softether-vpnserver
+  sed -i 's/\(uint64 BroadcastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
+  sleep 2
+  sed -i 's/\(uint64 BroadcastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
+  sleep 2
+  sed -i 's/\(uint64 UnicastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
+  sleep 2
+  sed -i 's/\(uint64 UnicastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
+  sleep 2
+  sudo systemctl restart softether-vpnserver
+  echo -e "${green}Reset client traffic Successfully ${plain}.\n"
+else
+  echo -e "${red}Reset client traffic skipped ${plain}.\n"
+fi
+
 
 # Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
