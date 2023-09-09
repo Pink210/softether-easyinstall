@@ -6,7 +6,7 @@ yellow='\033[0;33m'
 plain='\033[0m'
 clear
 # User confirmation
-read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.41-9798-rtm-2023.06.30) will be downloaded and compiled on your server.do you want to continue? [[y/N]] ' response
+read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(v4.43-9799-rtm-2023.08.31) will be downloaded and compiled on your server.Do you want to continue? [[y/N]] ' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
@@ -86,11 +86,11 @@ else
 fi
 
 
-# Download SoftEther | Version 4.42 | Build 9798
-echo -e "${green}Download & Install SoftEther | Version 4.42 | Build 9798.${plain}.\n"
-wget https://www.softether-download.com/files/softether/v4.42-9798-rtm-2023.06.30-tree/Linux/SoftEther_VPN_Server/64bit_-_ARM_64bit/softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-arm64-64bit.tar.gz || exit
+# Download SoftEther | Version 4.43 | Build 9799
+echo -e "${green}Download & Install SoftEther | Version 4.43 | Build 9799.${plain}.\n"
+wget https://www.softether-download.com/files/softether/v4.43-9799-beta-2023.08.31-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.43-9799-beta-2023.08.31-linux-x64-64bit.tar.gz || exit
 sleep 2
-tar xvf softether-vpnserver-v4.42-9798-rtm-2023.06.30-linux-arm64-64bit.tar.gz || exit
+tar xvf ssoftether-vpnserver-v4.43-9799-beta-2023.08.31-linux-x64-64bit.tar.gz || exit
 sleep 2
 cd vpnserver || exit
 sleep 2
