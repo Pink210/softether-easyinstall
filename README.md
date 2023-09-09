@@ -16,12 +16,12 @@ This is a bash script that automates the installation and configuration of SoftE
 ## Features
 
 - Updates your Linux system and installs some useful tools such as Certbot, Ncat, and Net-tools.
-- Downloads and compiles the latest version of SoftEther VPN Server (v4.42-9798-rtm-2023.06.30) from the official website.
+- Downloads and compiles the latest version of SoftEther VPN Server (v4.43-9799-rtm-2023.08.31) from the official website.
 - Creates a systemd service for SoftEther VPN Server and enables it to start on boot.
 - Enables IPv4 forwarding for VPN traffic.
 - Opens the necessary ports for VPN protocols using ufw firewall.
 - Update  SoftEther VPN Server without losing config(Be careful)
-- Optionally, sets up a certificate from Let's Encrypt using Certbot for secure VPN connections.
+- Optionally, set up a certificate from Let's Encrypt using Certbot for secure VPN connections.
 - Optionally, installs BBR.
 - Optionally, disable DDns(Dynamic DNS)
 
