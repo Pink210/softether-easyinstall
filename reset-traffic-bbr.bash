@@ -48,4 +48,3 @@ else
   echo "Have FUN ;)."
   exit 0
 fi
-esac
