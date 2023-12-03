@@ -1,6 +1,6 @@
 # SoftEther VPN Server Installer
 
-This is a bash script that automates the installation and configuration of SoftEther VPN Server on Ubuntu 20.04 or later. SoftEther VPN Server is a powerful and easy-to-use multi-protocol VPN software that runs on Linux, Windows, Mac, FreeBSD and Solaris.
+This is a bash script that automates the installation and configuration of the SoftEther VPN Server on Ubuntu 20.04 or later. SoftEther VPN Server is a powerful and easy-to-use multi-protocol VPN software that runs on Linux, Windows, Mac, FreeBSD, and Solaris.
 
 ## Table of Contents
 
@@ -118,13 +118,13 @@ sudo ufw deny 500,4500,8280,53/udp
 
 ## Update
 
-If you already have Softether installed on your server but want to update it to the last version you can use the install code.
+If you already have Softether installed on your server but want to update it to the latest version you can use the install code.
 the script now makes a backup, update, and restore your backup.
 but is more safe to do it Manual or just make a backup with Softether Windows software.
 
 <details>
   <summary>Click here for an update SoftEther VPN Server Manual</summary>
-To update SoftEther VPN Server to the latest version, you can follow these steps:
+To update the SoftEther VPN Server to the latest version, you can follow these steps:
 
 - Stop the systemd service:
 
@@ -182,7 +182,7 @@ sudo systemctl restart softether-vpnserver
 ```
 
 </details>
-now you can Close the extra ports from auto-installer
+now you can Close the extra ports from the auto-installer
 Close the extra ports
 <details>
   <summary>Click here for details</summary>
@@ -231,6 +231,13 @@ just type vpncmd in the Linux terminal
  ```bash
 vpncmd
  ```
+
+To reset client traffic and install BBR:
+
+ ```bash
+wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/reset-traffic-bbr.bash  && chmod +x se-install && ./se-install
+ ```
+
 
 ```[tasklist]
 ### My tasks
