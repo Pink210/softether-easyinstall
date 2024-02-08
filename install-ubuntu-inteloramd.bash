@@ -67,23 +67,7 @@ sleep 2
 
 #SET certificate
 clear
-read -rp "Do you want to set a certificate on your server? 'y' or 'n'" -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  printf 'enter your domain name?\n'
-  read -r ser # This reads input from the user and stores it in the variable name
-  printf 'enter your email address?\n'
-  read -r email # This reads input from the user and stores it in the variable name
-  if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
-  then
-    echo -e "${green}Certificate successfully installed and VPN server restarted.${plain}.\n"
-  else
-    echo -e "${red}Certificate installation failed.${plain}.\n"
-  fi  
-else
-  echo -e "${yellow}Certificate installation skipped.${plain}.\n"
-fi
+
 
 
 # Download SoftEther
@@ -201,27 +185,25 @@ else
   echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
 fi
 
-# Reset client traffic
-echo -e "${red}Skip it if is fresh install${plain}.\n"
-read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
+# Set Certificate
+read -rp "Do you want to set a certificate on your server? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  sudo systemctl stop softether-vpnserver
-  sed -i 's/\(uint64 BroadcastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-  sleep 1
-  sed -i 's/\(uint64 BroadcastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-  sleep 1
-  sed -i 's/\(uint64 UnicastBytes\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-  sleep 1
-  sed -i 's/\(uint64 UnicastCount\) [0-9]*/\1 0/g' /opt/softether/vpn_server.config
-  sleep 1
-  sudo systemctl restart softether-vpnserver
-  echo -e "${green}Reset client traffic Successfully ${plain}.\n"
+  printf 'enter your domain name?\n'
+  read -r ser # This reads input from the user and stores it in the variable name
+  printf 'enter your email address?\n'
+  read -r email # This reads input from the user and stores it in the variable name
+  if sudo certbot certonly --standalone --preferred-challenges http --agree-tos --email "$email" -d "$ser"
+  then
+    echo -e "${green}Certificate successfully installed and VPN server restarted.${plain}.\n"
+  else
+    echo -e "${red}Certificate installation failed.${plain}.\n"
+  fi  
 else
-  echo -e "${red}Reset client traffic skipped ${plain}.\n"
+  echo -e "${yellow}Certificate installation skipped.${plain}.\n"
 fi
-  sleep 3
+
 
 # Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
@@ -232,7 +214,7 @@ echo "alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'" >> ~/.bashrc
 
 
 clear
-# Ask the user to install BBR
+# BBR
 echo -e "${red}BBR is optimize for TCP connection. ${plain}.\n"
 read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
