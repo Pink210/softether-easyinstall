@@ -64,8 +64,6 @@ clear
 echo -e "${green}Install dependency.${plain}"
 sudo apt install -y gcc binutils gzip libreadline-dev libssl-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev || exit
 sleep 2
-
-#SET certificate
 clear
 
 
@@ -123,22 +121,24 @@ sleep 2
 cat /proc/sys/net/ipv4/ip_forward || exit
 
 # Openig port
-echo -e "${green}Openig port.${plain}.\n"
+echo -e "${green}Openig port And Enable FireWall.${plain}.\n"
+ufw allow ssh
+ufw default allow outgoing
+ufw default deny incoming
+ufw enable
 sudo ufw allow 22
 sudo ufw allow 53
-sudo ufw allow 2280
-sudo ufw allow 2380
 sudo ufw allow 443 || exit
 sudo ufw allow 80
 sudo ufw allow 992
-sudo ufw allow 1194
+sudo ufw allow 1194  || exit
 sudo ufw allow 2080
 sudo ufw allow 5555
 sudo ufw allow 4500
 sudo ufw allow 1701
 sudo ufw allow 500
-sudo ufw allow 8280
-sudo ufw allow 500,4500,8280,53/udp
+sudo ufw allow 500,4500,2080,53/udp
+sudo ufw reload
 sleep 5
 
 # Restore backup
@@ -153,25 +153,25 @@ fi
 
 clear
 # Security Close the extra ports
-read -rp "Do you want to Close the extra ports? 'y' or 'n'" -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  sudo ufw deny 2280
-  sudo ufw deny 2380
-  sudo ufw deny 1194
-  sudo ufw deny 2080
-  sudo ufw deny 4500
-  sudo ufw deny 1701
-  sudo ufw deny 500
-  sudo ufw deny 8280
-  echo -e "${green}Close the extra ports Successfully ${plain}.\n"
-else
-  echo -e "${red}Close the extra ports skipped ${plain}.\n"
-fi
+#read -rp "Do you want to Close the extra ports? 'y' or 'n'" -n 1 REPLY
+#printf '\n' # (optional) move to a new line
+#if [[ $REPLY =~ ^[Yy]$ ]]
+#then
+#  sudo ufw deny 2280
+#  sudo ufw deny 2380
+#  sudo ufw deny 1194
+#  sudo ufw deny 2080
+#  sudo ufw deny 4500
+#  sudo ufw deny 1701
+#  sudo ufw deny 500
+#  sudo ufw deny 8280
+#  echo -e "${green}Close the extra ports Successfully ${plain}.\n"
+#else
+#  echo -e "${red}Close the extra ports skipped ${plain}.\n"
+#fi
 
 # Security Dynamic DNS 
-echo -e "${red} IMPORTANT IF YOU DON'T KNOW, SKIP IT ${plain}."
+echo -e "${red} IMPORTANT, IF YOU DON'T KNOW, SKIP IT ${plain}."
 read -rp "Do you want to Disable Dynamic DNS? 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -215,7 +215,7 @@ echo "alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'" >> ~/.bashrc
 
 clear
 # BBR
-echo -e "${red}BBR is optimize for TCP connection. ${plain}.\n"
+echo -e "${red}BBR is a congestion control system that optimizes the transmission of data packets over a network. ${plain}.\n"
 read -p "Do you want to install BBR? [y/N] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -228,11 +228,15 @@ then
     clear
     echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
     echo "Have FUN ;)."
+    echo "REBOOT Recommended."
 else
   # Exit the script
   clear
   echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
   echo "Have FUN ;)."
+  echo "REBOOT Recommended."
   exit 0
 fi
 esac
+
+
