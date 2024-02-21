@@ -6,7 +6,7 @@ yellow='\033[0;33m'
 plain='\033[0m'
 clear
 # Reset client traffic
-echo -e "${red}SoftEther${plain}.\n"
+echo -e "${red}SoftEtherVPN${plain}.\n"
 read -rp "Do you want to Reset client traffic 'y' or 'n'" -n 1 REPLY
 printf '\n' # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -25,24 +25,7 @@ then
 else
   echo -e "${red}Reset client traffic skipped ${plain}.\n"
 fi
-  sleep 2
-
-# Ask the user to install BBR
-echo -e "${red}BBR is optimize for TCP connection. ${plain}.\n"
-read -p "Do you want to install BBR? [y/N] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  # installing
-    echo "net.core.default_qdisc=fq" | tee -a /etc/sysctl.conf
-    echo "net.ipv4.tcp_congestion_control=bbr" | tee -a /etc/sysctl.conf
-    # Apply changes
-    sysctl -p
-    clear
-    echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
-    echo "Have FUN ;)."
-else
-  # Exit the script
+# Exit the script
   clear
   echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
   echo "Have FUN ;)."
