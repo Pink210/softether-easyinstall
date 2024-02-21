@@ -232,7 +232,7 @@ just type vpncmd in the Linux terminal
 vpncmd
  ```
 
-To reset client traffic and install BBR:
+To reset client traffic:
 
  ```bash
 wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/reset-traffic-bbr.bash  && chmod +x se-install && ./se-install
