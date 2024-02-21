@@ -247,11 +247,9 @@ wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinsta
 - [X] Adding BBR
 - [X] Make backup/install/restore for update into the script
 - [X] Uninstall script
-- [ ] Install any other version of Softether
 - [X] Adding disable DDns into the script
 - [X] Adding Close the extra ports into the script
-- [ ] Renew Server certificate
-- [ ] Make a script for restarting client traffic
+- [X] Make a script for restarting client traffic
 - [X] Make a shortcut for the SoftEtherVPN setting
 ```
 ## Resources
