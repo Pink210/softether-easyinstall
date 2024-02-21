@@ -182,24 +182,6 @@ sudo systemctl restart softether-vpnserver
 ```
 
 </details>
-now you can Close the extra ports from the auto-installer
-Close the extra ports
-<details>
-  <summary>Click here for details</summary>
-  This script opens a lot of ports. I understand that opening several ports is harmful but I need it so... You may just use this code to close it.
-  
- ```bash
-sudo ufw deny 2280
-sudo ufw deny 2380
-sudo ufw deny 1194
-sudo ufw deny 2080
-sudo ufw deny 4500
-sudo ufw deny 1701
-sudo ufw deny 500
-sudo ufw deny 8280
- ```
-
-</details>
 
 ## Certificate
 
@@ -209,7 +191,8 @@ If you have a domain, you must configure the certificate as follows in Softether
 NOTE: Only enter one line of code at a time. Do not simply copy and paste everything.| On line 4,5, replace "YourDomainName" with your domain name. Skip line 1 and start at line 2 if you're currently in Softether Settings.
   
 ```bash
- echo "1" | /opt/softether/vpncmd 127.0.0.1:5555
+vpmcmd (if vpmcmd not work reboot your linux server and try it again)
+ you server password
  ServerCertSet
  /etc/letsencrypt/live/YourDomainName/fullchain.pem
  /etc/letsencrypt/live/YourDomainName/privkey.pem
