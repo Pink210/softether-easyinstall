@@ -50,7 +50,7 @@ fi
 # Perform apt update & install necessary software
 clear
 echo -e "${green}Updating Linux server.${plain}"
-sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y upgrade -y && sudo apt-get autoremove -y 
+sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y full-upgrade -y && sudo apt-get autoremove -y 
 sleep 2
 
 
