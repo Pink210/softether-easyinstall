@@ -40,6 +40,12 @@ wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinsta
 ```bash
 wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/install-ubuntu-arms.bash  && chmod +x se-install && ./se-install
 ```
+#### FOR Developer Edition (DE)
+```bash
+wget -O se-install https://raw.githubusercontent.com/Pink210/softether-easyinstall/master/install_DE.bash  && chmod +x se-install && ./se-install
+```
+
+
 
 There is no need to configure SoftEtherVPN with a password. Later, you can use SoftEther VPN Server Manager (Windows).
 To use this script, you need to have root privileges or be able to run commands with sudo.
