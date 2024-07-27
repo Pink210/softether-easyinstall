@@ -33,9 +33,6 @@ fi
 
 # Check for Update script
 if [ -d "/opt/softether" ]; then
-  read -rep $'!!! IMPORTANT !!!\n\nSoftether is already installed.Do you want to Update it?? [[y/N]] ' response
-  case "$response" in
-  [yY][eE][sS]|[yY])
   echo -e "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
   echo -e "${red}USE 'Ctrl + C' to cancel it.${plain}"
   sudo systemctl stop softether-vpnserver
@@ -57,7 +54,6 @@ clear
 echo -e "${green}Updating Linux server.${plain}"
 sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y full-upgrade -y && sudo apt-get autoremove -y 
 sleep 2
-
 
 # Install some useful tools
 clear
