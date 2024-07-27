@@ -6,7 +6,7 @@ yellow='\033[0;33m'
 plain='\033[0m'
 clear
 
-# Function to show a progress bar
+# progress bar
 show_progress() {
   local duration=${1}
   local interval=1
@@ -28,42 +28,7 @@ case "$response" in
 # Remove needrestart for less interruption 
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
-# REMOVE PREVIOUS INSTALL
-# Check for the original version
-if [ -d "/opt/vpnserver" ]; then
-  echo -e "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
-  echo -e "${red}USE 'Ctrl + C' to cancel it.${plain}"
-  sudo systemctl stop softether-vpnserver.service
-  sleep 2
-  sudo mkdir /opt/backup
-  sleep 2
-  sudo cp -f /opt/vpnserver/vpn_server.config /opt/backup/vpn_server.config.bak
-  sleep 2
-  sudo cp -rf /opt/vpnserver/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
-  sleep 2
-  sudo rm -rf /opt/vpnserver
-  sudo systemctl disable vpnserver
-  sudo vpnserver stop
-fi
 
-# Check for Update script
-if [ -d "/opt/softether" ]; then
-  echo -e "${yellow}Softether is already installed. The script is attempting to create a backup.${plain}"
-  echo -e "${red}USE 'Ctrl + C' to cancel it.${plain}"
-  sudo systemctl stop softether-vpnserver
-  sudo vpnserver stop
-  sleep 2
-  sudo mkdir /opt/backup
-  sleep 2
-  sudo cp -f /opt/softether/vpn_server.config /opt/backup/vpn_server.config.bak
-  sleep 2
-  sudo cp -rf /opt/softether/backup.vpn_server.config /opt/backup/backup.vpn_server.config 
-  sleep 2
-  sudo rm -rf /opt/softether
-  sudo systemctl disable softether-vpnserver
-fi
-
-# Start from here
 # Perform apt update & install necessary software
 clear
 echo -e "${green}Updating Linux server.${plain}"
@@ -101,33 +66,22 @@ sleep 2
 sudo make -C build install || exit
 sleep 2
 
-# Create the target directory if it doesn't exist
-echo -e "${green}Create /opt/softether/vpnserver directory if not exists.${plain}.\n"
-sudo mkdir -p /opt/softether/vpnserver
-
-# Move everything from /root/SoftEtherVPN/build to /opt/softether/vpnserver
-echo -e "${green}Moving files from /root/SoftEtherVPN/build to /opt/softether/vpnserver.${plain}.\n"
-sudo mv /root/SoftEtherVPN/build/* /opt/softether/vpnserver/
-
-# Set the necessary permissions for the moved files
-echo -e "${green}Setting executable permissions on /opt/softether/vpnserver files.${plain}.\n"
-sudo chmod +x /opt/softether/vpnserver
-
 
 # Create the service file with the desired content
 echo -e "Create the service file.\n"
 sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << 'EOF'
 [Unit]
-Description=SoftEther VPN server
-After=network-online.target
-After=dbus.service
+Description=SoftEther VPN Server
+After=network.target
 
 [Service]
 Type=forking
-ExecStart=/opt/softether/vpnserver start
-ExecReload=/bin/kill -HUP $MAINPID
-ExecStop=/opt/softether/vpnserver stop
-Restart=on-failure
+ExecStart=/root/SoftEtherVPN/vpnserver start
+ExecStop=/root/SoftEtherVPN/vpnserver stop
+ExecReload=/root/SoftEtherVPN/vpnserver restart
+User=root
+Group=root
+WorkingDirectory=/root/SoftEtherVPN/
 
 [Install]
 WantedBy=multi-user.target
@@ -167,33 +121,7 @@ sudo ufw allow 500
 sudo ufw allow 500,4500,2080,53/udp
 sudo ufw reload
 sleep 5
-
-# Restore backup
-if [ -d "/opt/backup" ]; then
-  clear
-  echo -e "${green}Restoring backup.${plain}.\n"
-  sudo systemctl stop softether-vpnserver
-  sudo cp -f /opt/backup/vpn_server.config.bak /opt/softether/vpn_server.config
-  sudo cp -rf /opt/backup/backup.vpn_server.config /opt/softether/
-  sudo systemctl restart softether-vpnserver
-fi
-
 clear
-
-# Security Dynamic DNS 
-echo -e "${red} IMPORTANT, IF YOU DON'T KNOW, SKIP IT ${plain}."
-read -rp "Do you want to Disable Dynamic DNS? 'y' or 'n'" -n 1 REPLY
-printf '\n' # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  sudo systemctl stop softether-vpnserver
-  sed -i 's/bool Disabled false/bool Disabled true/g' /opt/softether/vpn_server.config
-  sed -i 's/bool DisableNatTraversal false/bool DisableNatTraversal true/g' /opt/softether/vpn_server.config
-  sudo systemctl restart softether-vpnserver
-  echo -e "${green}Dynamic DNS Disable Successfully ${plain}.\n"
-else
-  echo -e "${red}Dynamic DNS Disable skipped ${plain}.\n"
-fi
 
 # Set Certificate
 read -rp "Do you want to set a certificate on your server? 'y' or 'n'" -n 1 REPLY
@@ -217,8 +145,5 @@ fi
 # Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
-# Adding shortcut for Softether setting
-alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'
-echo "alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'" >> ~/.bashrc
-
+echo -e "${red}REBOOT Recommended.${red}"
 esac # End of case statement
