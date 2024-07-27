@@ -67,35 +67,10 @@ sudo make -C build install || exit
 sleep 2
 
 
-# Create the service file with the desired content
-echo -e "Create the service file.\n"
-sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << 'EOF'
-[Unit]
-Description=SoftEther VPN Server
-After=network.target
-
-[Service]
-Type=forking
-ExecStart=/root/SoftEtherVPN/vpnserver start
-ExecStop=/root/SoftEtherVPN/vpnserver stop
-ExecReload=/root/SoftEtherVPN/vpnserver restart
-User=root
-Group=root
-WorkingDirectory=/root/SoftEtherVPN/
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Reload the systemd daemon to recognize the new service
-sudo systemctl daemon-reload || exit
+# Start service
+vpnserver start
 sleep 2
-# Enable the service to start on boot
-sudo systemctl enable softether-vpnserver.service || exit
-sleep 3
-# Start the service
-sudo systemctl start softether-vpnserver.service || exit
-sleep 5
+
 # Enable IPv4 forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward || exit
 sleep 2
@@ -145,5 +120,4 @@ fi
 # Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
-echo -e "${red}REBOOT Recommended.${red}"
 esac # End of case statement
