@@ -101,15 +101,18 @@ sleep 2
 sudo make -C build install || exit
 sleep 2
 
-# Move files to /opt/softether/
-echo -e "${green}Moving SoftEther files to /opt/softether/.${plain}.\n"
-sudo mkdir -p /opt/softether/
-sudo cp -r vpnserver /opt/softether/
-sudo cp -r vpnclient /opt/softether/
-sudo chmod +x /opt/softether/vpnserver/vpnserver
-sudo chmod +x /opt/softether/vpnserver/vpncmd
-sudo chmod +x /opt/softether/vpnclient/vpnclient
-sudo chmod +x /opt/softether/vpnclient/vpncmd
+# Create the target directory if it doesn't exist
+echo -e "${green}Create /opt/softether/vpnserver directory if not exists.${plain}.\n"
+sudo mkdir -p /opt/softether/vpnserver
+
+# Move everything from /root/SoftEtherVPN/build to /opt/softether/vpnserver
+echo -e "${green}Moving files from /root/SoftEtherVPN/build to /opt/softether/vpnserver.${plain}.\n"
+sudo mv /root/SoftEtherVPN/build/* /opt/softether/vpnserver/
+
+# Set the necessary permissions for the moved files
+echo -e "${green}Setting executable permissions on /opt/softether/vpnserver files.${plain}.\n"
+sudo chmod +x /opt/softether/vpnserver
+
 
 # Create the service file with the desired content
 echo -e "Create the service file.\n"
