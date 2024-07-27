@@ -79,9 +79,6 @@ cat /proc/sys/net/ipv4/ip_forward || exit
 # Opening port
 echo -e "${green}Opening port And Enable FireWall.${plain}.\n"
 sudo ufw allow ssh
-sudo ufw default allow outgoing
-sudo ufw default deny incoming
-sudo ufw enable
 sudo ufw allow 22
 sudo ufw allow 53
 sudo ufw allow 443 || exit
@@ -94,6 +91,9 @@ sudo ufw allow 4500
 sudo ufw allow 1701
 sudo ufw allow 500
 sudo ufw allow 500,4500,2080,53/udp
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw enable
 sudo ufw reload
 sleep 5
 clear
