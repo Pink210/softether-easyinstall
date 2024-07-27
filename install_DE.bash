@@ -5,12 +5,27 @@ green='\033[0;32m'
 yellow='\033[0;33m'
 plain='\033[0m'
 clear
+
+# Function to show a progress bar
+show_progress() {
+  local duration=${1}
+  local interval=1
+  local elapsed=0
+  echo -ne '['
+  while ((elapsed < duration)); do
+    sleep "$interval"
+    printf '▓'
+    elapsed=$((elapsed + interval))
+  done
+  echo -ne "]\n"
+}
+
 # User confirmation
-read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(Developer Edition) will be downloaded and compiled on your server.Do you want to continue? [[y/N]] ' response
+read -rep $'!!! IMPORTANT !!!\n\nSoftEther VPN(Developer Edition) will be downloaded and compiled on your server. Do you want to continue? [[y/N]] ' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
-#remove needrestart for less interruption 
+# Remove needrestart for less interruption 
 sudo sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
 
 # REMOVE PREVIOUS INSTALL
@@ -52,22 +67,24 @@ fi
 # Perform apt update & install necessary software
 clear
 echo -e "${green}Updating Linux server.${plain}"
-sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y full-upgrade -y && sudo apt-get autoremove -y 
+(sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y full-upgrade -y && sudo apt-get autoremove -y) &
+show_progress 20
 sleep 2
 
 # Install some useful tools
 clear
 echo -e "${green}Install some useful tools.${plain}"
-sudo apt-get install -y certbot && sudo apt-get install -y ncat && sudo apt-get install -y net-tools
+(sudo apt-get install -y certbot && sudo apt-get install -y ncat && sudo apt-get install -y net-tools) &
+show_progress 15
 sleep 2
+
 # Install dependency
 clear
 echo -e "${green}Install dependency.${plain}"
-sudo sudo apt -y install cmake gcc g++ make pkgconf libncurses5-dev libssl-dev libsodium-dev libreadline-dev zlib1g-dev || exit
+(sudo apt -y install cmake gcc g++ make pkgconf libncurses5-dev libssl-dev libsodium-dev libreadline-dev zlib1g-dev || exit) &
+show_progress 15
 sleep 2
 clear
-
-
 
 # Download SoftEther
 echo -e "${green}Download & Install SoftEther | Developer Edition.${plain}.\n"
@@ -94,8 +111,6 @@ sudo chmod +x /opt/softether/vpnserver/vpncmd
 sudo chmod +x /opt/softether/vpnclient/vpnclient
 sudo chmod +x /opt/softether/vpnclient/vpncmd
 
-
-
 # Create the service file with the desired content
 echo -e "Create the service file.\n"
 sudo tee /etc/systemd/system/softether-vpnserver.service > /dev/null << 'EOF'
@@ -115,7 +130,6 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 
-
 # Reload the systemd daemon to recognize the new service
 sudo systemctl daemon-reload || exit
 sleep 2
@@ -125,23 +139,23 @@ sleep 3
 # Start the service
 sudo systemctl start softether-vpnserver.service || exit
 sleep 5
-# enable IPv4 forwadring 
+# Enable IPv4 forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward || exit
 sleep 2
 cat /proc/sys/net/ipv4/ip_forward || exit
 
-# Openig port
-echo -e "${green}Openig port And Enable FireWall.${plain}.\n"
-ufw allow ssh
-ufw default allow outgoing
-ufw default deny incoming
-ufw enable
+# Opening port
+echo -e "${green}Opening port And Enable FireWall.${plain}.\n"
+sudo ufw allow ssh
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw enable
 sudo ufw allow 22
 sudo ufw allow 53
 sudo ufw allow 443 || exit
 sudo ufw allow 80
 sudo ufw allow 992
-sudo ufw allow 1194  || exit
+sudo ufw allow 1194 || exit
 sudo ufw allow 2080
 sudo ufw allow 5555
 sudo ufw allow 4500
@@ -197,37 +211,11 @@ else
   echo -e "${yellow}Certificate installation skipped.${plain}.\n"
 fi
 
-
 # Add need-restart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 
-#Adding shortcut for Softether setting
+# Adding shortcut for Softether setting
 alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'
 echo "alias vpncmd='sudo /opt/softether/vpncmd 127.0.0.1:5555'" >> ~/.bashrc
 
-
-clear
-# BBR
-echo -e "${red}BBR is a congestion control system that optimizes the transmission of data packets over a network. ${plain}.\n"
-read -p "Do you want to install BBR? [y/N] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  # installing
-    echo "net.core.default_qdisc=fq" | tee -a /etc/sysctl.conf
-    echo "net.ipv4.tcp_congestion_control=bbr" | tee -a /etc/sysctl.conf
-    # Apply changes
-    sysctl -p
-    clear
-    echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
-    echo "Have FUN ;)."
-    echo "REBOOT Recommended."
-else
-  # Exit the script
-  clear
-  echo -e "${red} USE 'vpncmd' FOR Softether Setting ${plain}"
-  echo "Have FUN ;)."
-  echo "REBOOT Recommended."
-  exit 0
-fi
-esac
+esac # End of case statement
