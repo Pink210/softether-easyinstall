@@ -123,21 +123,21 @@ cat /proc/sys/net/ipv4/ip_forward || exit
 # Openig port
 echo -e "${green}Openig port And Enable FireWall.${plain}.\n"
 ufw allow ssh
-ufw default allow outgoing
-ufw default deny incoming
-ufw enable
 sudo ufw allow 22
 sudo ufw allow 53
-sudo ufw allow 443 || exit
+sudo ufw allow 443
 sudo ufw allow 80
 sudo ufw allow 992
-sudo ufw allow 1194  || exit
+sudo ufw allow 1194
 sudo ufw allow 2080
 sudo ufw allow 5555
 sudo ufw allow 4500
 sudo ufw allow 1701
 sudo ufw allow 500
 sudo ufw allow 500,4500,2080,53/udp
+ufw default allow outgoing
+ufw default deny incoming
+ufw enable
 sudo ufw reload
 sleep 5
 
