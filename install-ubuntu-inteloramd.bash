@@ -70,7 +70,7 @@ clear
 
 # Download SoftEther
 echo -e "${green}Download & Install SoftEther | Version 4.44 | Build 9807.${plain}.\n"
-wget wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.44-9807-rtm/softether-vpnserver-v4.44-9807-rtm-2025.04.16-linux-x64-64bit.tar.gz || exit || exit
+wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.44-9807-rtm/softether-vpnserver-v4.44-9807-rtm-2025.04.16-linux-x64-64bit.tar.gz || exit || exit
 sleep 2
 tar xvf softether-vpnserver-v4.44-9807-rtm-2025.04.16-linux-x64-64bit.tar.gz || exit
 sleep 2
